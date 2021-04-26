@@ -8,6 +8,11 @@ class App extends React.Component {
         timer: null,
     }
 
+    playBell = () => {
+        const sound = new Audio('./sounds/bell.wav');
+        sound.play();
+    }
+
     formatTime = (time) => {
         let seconds = time%60;
         let minutes = Math.floor(time/60);
@@ -20,9 +25,8 @@ class App extends React.Component {
         this.setState({
             time: this.state.time - 1,
         });
-
         if (this.state.time === 0 ) {
-
+            this.playBell();
             if (this.state.status === 'work') {
                 this.setState({
                     status: 'rest',
@@ -39,7 +43,6 @@ class App extends React.Component {
     };
 
     startTimer = () => {
-
         this.setState({
             status: 'work',
             time: 1200,
@@ -54,6 +57,10 @@ class App extends React.Component {
             timer: clearInterval(this.state.timer),
         });
     };
+
+    closeApp = () => {
+        window.close();
+    }
 
 
     render() {
@@ -70,7 +77,7 @@ class App extends React.Component {
                 {(status !== 'off') && <div className="timer">{this.formatTime(time)}</div>}
                 {(status === 'off') && <button className="btn" onClick={this.startTimer}>Start</button>}
                 {(status !== 'off') && <button className="btn" onClick={this.stopTimer}>Stop</button>}
-                <button className="btn btn-close">X</button>
+                <button className="btn btn-close" onClick={this.closeApp}>X</button>
             </div>
         )
     };
